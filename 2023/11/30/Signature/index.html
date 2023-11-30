@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Signature 签名 | Xjelly‘s Blog</title><meta name="author" content="xjelly"><meta name="copyright" content="xjelly"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Signature 签名Signing is used when integrity is important. It is meant to be a guarantee that data sent from A to B was not altered.  So A signs the data by calculating the hash of the data and encrypti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Signature 签名">
+<meta property="og:url" content="https://jellyfish0029.github.io/2023/11/30/Signature/index.html">
+<meta property="og:site_name" content="Xjelly‘s Blog">
+<meta property="og:description" content="Signature 签名Signing is used when integrity is important. It is meant to be a guarantee that data sent from A to B was not altered.  So A signs the data by calculating the hash of the data and encrypti">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2023-11-30T05:18:09.000Z">
+<meta property="article:modified_time" content="2023-11-30T09:16:32.838Z">
+<meta property="article:author" content="xjelly">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://jellyfish0029.github.io/2023/11/30/Signature/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Signature 签名',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-11-30 17:16:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Xjelly‘s Blog"><span class="site-name">Xjelly‘s Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Signature 签名</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-30T05:18:09.000Z" title="发表于 2023-11-30 13:18:09">2023-11-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-30T09:16:32.838Z" title="更新于 2023-11-30 17:16:32">2023-11-30</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Signature 签名"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Signature-签名"><a href="#Signature-签名" class="headerlink" title="Signature 签名"></a>Signature 签名</h1><p>Signing is used when integrity is important. It is meant to be a guarantee that data sent from A to B was not altered. </p>
+<p>So A signs the data by calculating the hash of the data and encrypting that hash using an asymmetric private key. B can then verify the data by calculating the hash of the data and decrypting the signature to compare if both hashes are the same.</p>
+<p>A对data进行哈希之后，使用非对称加密的私钥对哈希值进行加密，生成签名。B对data哈希之后，使用公钥对A生成的签名进行解密，得到A对data的哈希值，验证这两个哈希值是否相等。</p>
+<h2 id="RAW-signatures"><a href="#RAW-signatures" class="headerlink" title="RAW signatures"></a>RAW signatures</h2><p>A raw signature is usually calculated as follows:</p>
+<pre><code>create a hash of the data (e.g. SHA-256 hash)
+
+encrypt the hash using an asymmetric private key (e.g. RSA 2048 bit key)
+
+(optionally) encode the binary encrypted hash using base64 encoding
+</code></pre>
+<p>B will have to get the certificate with the public key as well. This might have been exchanged before. So at least 3 files are involved: the data, the signature and the certificate.</p>
+<h2 id="CMS-signatures"><a href="#CMS-signatures" class="headerlink" title="CMS signatures"></a>CMS signatures</h2><p>A CMS signature is a standardized way to send data + signature + certificate with the public key all in one file from A to B. As long as the certificate is valid and not revoked, B can use the supplied public key to verify the signature.</p>
+<h2 id="SOAP-signatures"><a href="#SOAP-signatures" class="headerlink" title="SOAP signatures"></a>SOAP signatures</h2><p>A SOAP signature also contains data and the signature and optionally the certificate. All in one XML payload. There are special steps involved in calculating the hash of the data. This has to do with the fact that the SOAP XML sent from system to system might introduce extra elements or timestamps. Also, SOAP Signing offers the possibility to sign different parts of the message by different parties.</p>
+<h2 id="Email-signatures"><a href="#Email-signatures" class="headerlink" title="Email signatures"></a>Email signatures</h2><p>Sending emails is not very difficult. You have to fill in some data and send it to a server that forwards it, and eventually it will end up at its destination. However, it is possible to send emails with a FROM field that is not your own email address. In order to guarantee to your receiver that you really sent this email, you can sign your email. A trusted third party will check your identity and issue an email signing certificate. You install the private key in your email application and configure it to sign emails that you send out. The certificate is issued on a specific email address and all others that receive this email will see an indication that the sender is verified, because their tools will verify the signature using the public certificate that was issued by the trusted third party.</p>
+<h2 id="PDF-or-Word-or-other-signatures"><a href="#PDF-or-Word-or-other-signatures" class="headerlink" title="PDF or Word or other signatures"></a>PDF or Word or other signatures</h2><p>Adobe PDF documents and Microsoft Word documents are also examples of things that support signing. The signature is also inside the same document as the data so there is some description on what is part of the data and what is part of the metadata. Governments usually send official documents with a PDF that contains a certificate.</p>
+<h2 id="RSA加密、解密、签名、验签"><a href="#RSA加密、解密、签名、验签" class="headerlink" title="RSA加密、解密、签名、验签"></a>RSA加密、解密、签名、验签</h2><p>这里将A理解为客户端，B理解为服务端，A、B分别有一对公钥和私钥。</p>
+<pre><code>加解密过程简述
+A和B进行通信加密,B要先生成一对RSA密钥,B自己持有私钥,给A公钥 —&gt;A使用B的公钥加密要发送的内容,然后B接收到密文后通过自己的私钥解密内容
+
+签名验签过程简述
+A给B发送消息,A先计算出消息的消息摘要,然后使用自己的私钥加密消息摘要,被加密的消息摘要就是签名.(A用自己的私钥给消息摘要加密成为签名)
+B收到消息后,也会使用和A相同的方法提取消息摘要,然后用A的公钥解密签名,并与自己计算出来的消息摘要进行比较–&gt;如果相同则说明消息是A发送给B的,同时,A也无法否认自己发送消息给B的事实.(B使用A的公钥解密签名文件的过程,叫做&quot;验签&quot;).
+</code></pre>
+<p>签名过程:</p>
+<pre><code>A计算消息m的消息摘要,记为 h(m)
+A使用私钥(n,d)对h(m)加密,生成签名s, s满足:s=(h(m))^d mod n;
+由于A是用自己的私钥对消息摘要加密,所以只用使用s的公钥才能解密该消息摘要,这样A就不可否认自己发送了该消息给B.
+A发送消息和签名(m,s)给B
+</code></pre>
+<p>验签过程:</p>
+<pre><code>B计算消息m的消息摘要(计算方式和A相同),记为h(m)
+B使用A的公钥(n,e)解密s,得到 H(m), H(m) = s^e mod n
+B比较H(m)与h(m),相同才能证明验签成功
+</code></pre>
+<p>RSA</p>
+<p><img src="/../imgs/image-20231130171611221.png" alt="image-20231130171611221"></p>
+<h2 id="Assignment"><a href="#Assignment" class="headerlink" title="Assignment"></a>Assignment</h2><p>Now suppose you have the following private key:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN PRIVATE KEY-----</span><br><span class="line">MIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQCkBJfcnVI6YX9j0Cy8qJjkNNVwEcZz6I9jMrxsdnGhXP2H84WgTP4q+996umjt7RDHQfC2UxALQ/IBwqEG19jYhVuqRigROWsFQI0vK/d4+fAf00aegiQSRudXZgK5mJK0e/LhkH1xsh/KCni6qT9c1/SJaYeomQkd2bRWnbN8EKV16h9GhLKxvS5WbcYNcpHOn5Tr6v6iJif/Vs7DOqjBZHmyPm3V3aRxSCbbV0ObmCpxUaCOJbtvWok6MdCzuucvfPS0KvhM6glUD3h320k0RExLHhawH4/UU1dl+yAw7TpJJvRt0NfI+1kyvJXTezg24m3acN4Fs23mYvG/EWKrAgERAoIBAE0vVoXvrjmXSwHLYFjHz3pzN0PMISd8f7Y1/lEorfGVLAO95IerwucNHd9mx/d+nnviy6EYB4zUrh7yLajeC7Evsqp7XiY5I03EBjRQ7O2iy1pFTmi1tp8wbN3Vpu3tcjbQ6sSAOwhT0rluVu5tw3b8NtdAuE9XE1lXY+yGcpS7yE7730aiDv/d3bupb9brZQVcATKf5oatZyl2gTGWXVkeG6q31luC9HPKqezrIu1kL48SB9mghr7z4qYPjWLBbPEtAYm1g29TvPzaeOVP+I1NNdMUr5YbKTV4/M1x36akjXkY1rUNouWsozO8fRPeoVO8wfCiSFMueNmvZO8T0nECgYEA4hUsZihjrZDQ2JS8nI6cHuT91GrWvMB01cJc3HVRNPasrpLZtCDrAdKtfJQbd8lU1m1oK5qTsR76QpqjkiZDS1OM4v0jrMJ8NdpI0Eeoo47HMSFc46bH4U4mfZ4nvsZdsPzZ/Z1SBvhdVmDkK9yYy52vfl9Hv8oNjV3Xgg2RKGMCgYEAubjmfqgIpUE03pLpG9YiPD4+PfWAeAOA1wTeH8SJ7W1X0FSeEjJ8WyiMAS/IIZnObvPjJEUc6/qaBP6tMhuclFtwbnJllD3b4eB2Z0jotXk5CMk1Pepd9vSLwJNBZihx3Kr4Lo/B1qiPKAPn4CypVcdB01vQRIrjH7n2uTV2GxkCgYBdF8b843RWhuyVamvH/nyFMR05WSs+qZmFMeoAbIrZkr+TLWizlRV5OKHJ4qHmB5tnWjnz1jzQdirQIY6ll0jiyAzV78NlQQX4DpZz4UVwhhXI7564F3964/G7QR9srAh2DcMsMbhdORdfzYshHplEyHVwRVnHcVDf21i9FKUuvwKBgHgsWOiK2Grt9Qh9LWxdYXJGZIJxrXrVFyG32wV/LBIZkyxy/N6ZI0oLLWot+fefwc9Sg+pK1nqTGF2Vu1yodF/+7mWVUMlVM+yCLn8RDwwDJOeRQJF5iBhD4fUT/SP8DXCq3NLVfWzHa7B6/3LvuN0mlAE7aKTSVrotCQ5t4wJ5AoGATIHZ86V21OMdK4EyORqPv8qIywm73787yGj8Ffbjh1DnCn/ItxPtMXNFpBiMd93Xb3ph1y5qk/lfW8ju4EywBqCretgrYQLN8Wj/PxRxfJei6Bub6OW5WYCEZ3PjqtmelVv73ZZXD6jxjHx+hS3k1pKJdh4mOeGK+3y1aAsxBos=</span><br><span class="line">-----END PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+
+<p>Then what was the modulus of the public key and now provide a signature for us based on that modulus .</p>
+<p>题目给出了一个rsa私钥，要求找出它的模，并对模签名。</p>
+<p>使用openssl工具可以实现：</p>
+<p>查看openssl手册：</p>
+<p><img src="/../imgs/image-20231130165119553.png" alt="image-20231130165119553"></p>
+<p>把题目中给出的私钥存起来放在文件private.key中，使用-modulus可以算出模：</p>
+<p><img src="/../imgs/image-20231130165302583.png" alt="image-20231130165302583"></p>
+<p>查看openssl dgst的手册，可以找到一些签名方法：</p>
+<p><img src="/../imgs/image-20231130165624530.png" alt="image-20231130165624530"></p>
+<p>-sign val ：使用私钥对消息进行签名：（使用sha256进行哈希）</p>
+<p><img src="/../imgs/image-20231130165338577.png" alt="image-20231130165338577"></p>
+<p>于是生成了签名。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Jellyfish0029.github.io">xjelly</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://jellyfish0029.github.io/2023/11/30/Signature/">https://jellyfish0029.github.io/2023/11/30/Signature/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Jellyfish0029.github.io" target="_blank">Xjelly‘s Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/11/29/Crypto%20Basic%201/" title="Crypto Basics 1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Crypto Basics 1</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">xjelly</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Jellyfish0029" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xjelly0029@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Signature-%E7%AD%BE%E5%90%8D"><span class="toc-number">1.</span> <span class="toc-text">Signature 签名</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RAW-signatures"><span class="toc-number">1.1.</span> <span class="toc-text">RAW signatures</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS-signatures"><span class="toc-number">1.2.</span> <span class="toc-text">CMS signatures</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SOAP-signatures"><span class="toc-number">1.3.</span> <span class="toc-text">SOAP signatures</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Email-signatures"><span class="toc-number">1.4.</span> <span class="toc-text">Email signatures</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PDF-or-Word-or-other-signatures"><span class="toc-number">1.5.</span> <span class="toc-text">PDF or Word or other signatures</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RSA%E5%8A%A0%E5%AF%86%E3%80%81%E8%A7%A3%E5%AF%86%E3%80%81%E7%AD%BE%E5%90%8D%E3%80%81%E9%AA%8C%E7%AD%BE"><span class="toc-number">1.6.</span> <span class="toc-text">RSA加密、解密、签名、验签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Assignment"><span class="toc-number">1.7.</span> <span class="toc-text">Assignment</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/30/Signature/" title="Signature 签名">Signature 签名</a><time datetime="2023-11-30T05:18:09.000Z" title="发表于 2023-11-30 13:18:09">2023-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/29/Crypto%20Basic%201/" title="Crypto Basics 1">Crypto Basics 1</a><time datetime="2023-11-29T13:25:19.000Z" title="发表于 2023-11-29 21:25:19">2023-11-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/21/SEED%20LAB4%20Format%20String/" title="SEED LAB4 Format String">SEED LAB4 Format String</a><time datetime="2023-11-21T08:14:36.174Z" title="发表于 2023-11-21 16:14:36">2023-11-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/18/SEED%20LAB5%20Dirty%20Cow/" title="SEED LAB5 Dirty Cow">SEED LAB5 Dirty Cow</a><time datetime="2023-11-18T07:16:24.976Z" title="发表于 2023-11-18 15:16:24">2023-11-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/09/SEED%20LAB3%20buffer%20overflow/" title="SEED LAB3 Buffer Overflow(Set-UID)">SEED LAB3 Buffer Overflow(Set-UID)</a><time datetime="2023-11-09T09:28:37.936Z" title="发表于 2023-11-09 17:28:37">2023-11-09</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By xjelly</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
