@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SEED LAB5 Dirty Cow | Xjelly‘s Blog</title><meta name="author" content="xjelly"><meta name="copyright" content="xjelly"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="TASK 1  Modify a Dummy Read-Only File任务要求：利用Dirty Cow 写一个只读文件 2.1 Create a Dummy File在root文件夹中添加一个文件名为zzz,修改权限使它对其他用户只读，写入1111122223333  当其他用户试图写入文件时，因权限不够而失败  目标：通过Dirty Cow把”2222222“改为”*************">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SEED LAB5 Dirty Cow | Xjelly‘s Blog</title><meta name="author" content="xjelly"><meta name="copyright" content="xjelly"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="TASK 1  Modify a Dummy Read-Only File任务要求：利用Dirty Cow 写一个只读文件 2.1 Create a Dummy File在root文件夹中添加一个文件名为zzz,修改权限使它对其他用户只读，写入1111122223333  当其他用户试图写入文件时，因权限不够而失败  目标：通过Dirty Cow把”2222222“改为”*************">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SEED LAB5 Dirty Cow">
 <meta property="og:url" content="https://jellyfish0029.github.io/2023/11/18/SEED%20LAB5%20Dirty%20Cow/index.html">
@@ -129,7 +129,7 @@
       win.activateLightMode = () => {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
         }
       }
       const t = saveToLocal.get('theme')

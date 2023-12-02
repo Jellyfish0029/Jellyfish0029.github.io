@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SEED LAB4 Format String | Xjelly‘s Blog</title><meta name="author" content="xjelly"><meta name="copyright" content="xjelly"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="环境搭建1.关闭地址空间随机化 2.在serve_code下make,把fromat.c编译成32位和64位版本： 命令: make make install  在lab4下 dcbuild dcup 出现attaching to …后，关闭终端 dockps （之后按照手册） 实验过程Task 1: Crashing the Program10.9.0.5     运行32bits的漏洞程序 向">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SEED LAB4 Format String | Xjelly‘s Blog</title><meta name="author" content="xjelly"><meta name="copyright" content="xjelly"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="环境搭建1.关闭地址空间随机化 2.在serve_code下make,把fromat.c编译成32位和64位版本： 命令: make make install  在lab4下 dcbuild dcup 出现attaching to …后，关闭终端 dockps （之后按照手册） 实验过程Task 1: Crashing the Program10.9.0.5     运行32bits的漏洞程序 向">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SEED LAB4 Format String">
 <meta property="og:url" content="https://jellyfish0029.github.io/2023/11/21/SEED%20LAB4%20Format%20String/index.html">
@@ -129,7 +129,7 @@
       win.activateLightMode = () => {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
         }
       }
       const t = saveToLocal.get('theme')
