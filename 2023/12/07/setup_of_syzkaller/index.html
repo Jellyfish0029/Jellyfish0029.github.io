@@ -1,0 +1,365 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Set up Syzkaller (记录安装过程) | Xjelly‘s Blog</title><meta name="author" content="xjelly"><meta name="copyright" content="xjelly"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="参考官方的配置手册：syzkaller&#x2F;docs&#x2F;linux&#x2F;setup_ubuntu-host_qemu-vm_x86-64-kernel.md at master · google&#x2F;syzkaller (github.com) 但是也才到了很多坑，花了一天半的时间折腾好。初学的时候总是不停地折腾。加油吧！ 踩坑情况:一、配置过程1.编译内核时缺程序：bc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Set up Syzkaller (记录安装过程)">
+<meta property="og:url" content="https://jellyfish0029.github.io/2023/12/07/setup_of_syzkaller/index.html">
+<meta property="og:site_name" content="Xjelly‘s Blog">
+<meta property="og:description" content="参考官方的配置手册：syzkaller&#x2F;docs&#x2F;linux&#x2F;setup_ubuntu-host_qemu-vm_x86-64-kernel.md at master · google&#x2F;syzkaller (github.com) 但是也才到了很多坑，花了一天半的时间折腾好。初学的时候总是不停地折腾。加油吧！ 踩坑情况:一、配置过程1.编译内核时缺程序：bc">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jellyfish0029.github.io/images_config/index_img.jpg">
+<meta property="article:published_time" content="2023-12-07T01:53:24.000Z">
+<meta property="article:modified_time" content="2023-12-09T03:16:58.906Z">
+<meta property="article:author" content="xjelly">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jellyfish0029.github.io/images_config/index_img.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://jellyfish0029.github.io/2023/12/07/setup_of_syzkaller/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Set up Syzkaller (记录安装过程)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-09 11:16:58'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images_config/index_img.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/poems/"><i class="fa-fw fas fa-poems"></i><span> 诗歌</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images_config/ar2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Xjelly‘s Blog"><span class="site-name">Xjelly‘s Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/poems/"><i class="fa-fw fas fa-poems"></i><span> 诗歌</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Set up Syzkaller (记录安装过程)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-07T01:53:24.000Z" title="发表于 2023-12-07 09:53:24">2023-12-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-12-09T03:16:58.906Z" title="更新于 2023-12-09 11:16:58">2023-12-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Set up Syzkaller (记录安装过程)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>参考官方的配置手册：<a target="_blank" rel="noopener" href="https://github.com/google/syzkaller/blob/master/docs/linux/setup_ubuntu-host_qemu-vm_x86-64-kernel.md">syzkaller&#x2F;docs&#x2F;linux&#x2F;setup_ubuntu-host_qemu-vm_x86-64-kernel.md at master · google&#x2F;syzkaller (github.com)</a></p>
+<p>但是也才到了很多坑，花了一天半的时间折腾好。初学的时候总是不停地折腾。加油吧！</p>
+<h1 id="踩坑情况"><a href="#踩坑情况" class="headerlink" title="踩坑情况:"></a>踩坑情况:</h1><h2 id="一、配置过程"><a href="#一、配置过程" class="headerlink" title="一、配置过程"></a>一、配置过程</h2><h3 id="1-编译内核时缺程序：bc"><a href="#1-编译内核时缺程序：bc" class="headerlink" title="1.编译内核时缺程序：bc"></a>1.编译内核时缺程序：bc</h3><p>bc (Basic Calculate) </p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208091301453.png" alt="image-20231208091301453"></p>
+<p>解决办法:安装bc之后重新编译。</p>
+<p>注：不严重的问题，就是编译十分钟之后报错有点糟心。</p>
+<h3 id="2-创建镜像时wget时拒绝连接"><a href="#2-创建镜像时wget时拒绝连接" class="headerlink" title="2.创建镜像时wget时拒绝连接"></a>2.创建镜像时wget时拒绝连接</h3><p><img src="/../imgs/setup_syzkaller/image-20231208103425564.png" alt="image-20231208103425564"></p>
+<h4 id="解决办法1（无效）："><a href="#解决办法1（无效）：" class="headerlink" title="解决办法1（无效）："></a>解决办法1（无效）：</h4><p>查询raw.githubusercontent.com的ip,将ip加入&#x2F;etc&#x2F;hosts</p>
+<h4 id="解决办法2（无效）："><a href="#解决办法2（无效）：" class="headerlink" title="解决办法2（无效）："></a>解决办法2（无效）：</h4><p>修改DNS.</p>
+<h4 id="解决办法3（成功）："><a href="#解决办法3（成功）：" class="headerlink" title="解决办法3（成功）："></a>解决办法3（成功）：</h4><p>手动复制文件。（反正就这一个文件，还挺小，就手动cv吧。）</p>
+<h3 id="3-运行create-image-sh时无法下载所需的包"><a href="#3-运行create-image-sh时无法下载所需的包" class="headerlink" title="3.运行create-image.sh时无法下载所需的包"></a>3.运行create-image.sh时无法下载所需的包</h3><p>解决办法：更换为国内镜像源。</p>
+<p>注：修改文件后记得apt-get update，我尝试的时候更新得奇慢无比，令人郁闷。</p>
+<h3 id="4-启动QEMU时在虚拟机中嵌套使用虚拟机"><a href="#4-启动QEMU时在虚拟机中嵌套使用虚拟机" class="headerlink" title="4.启动QEMU时在虚拟机中嵌套使用虚拟机"></a>4.启动QEMU时在虚拟机中嵌套使用虚拟机</h3><p>Could not access KVM kernel module</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208145336238.png" alt="image-20231208145336238"></p>
+<p>解决办法：</p>
+<p>在虚拟机设置中开启虚拟化，并在主机中关闭Hyper-v。</p>
+<h3 id="5-启动QEMU时报错"><a href="#5-启动QEMU时报错" class="headerlink" title="5.启动QEMU时报错"></a>5.启动QEMU时报错</h3><p>报错：Failed to mount &#x2F;sys&#x2F;kernel&#x2F;config</p>
+<p>解决办法：重新编译内核。有可能是配置的时候什么地方手误写错了。</p>
+<h3 id="6-测试syzkaller时无法启动网络接口"><a href="#6-测试syzkaller时无法启动网络接口" class="headerlink" title="6.测试syzkaller时无法启动网络接口"></a>6.测试syzkaller时无法启动网络接口</h3><p>Failed to start Raise network interfaces</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208182306123.png" alt="image-20231208182306123"></p>
+<h2 id="二、其他坑"><a href="#二、其他坑" class="headerlink" title="二、其他坑"></a>二、其他坑</h2><h2 id="1-同时拉取Linux内核、安装QEMU导致拉取失败"><a href="#1-同时拉取Linux内核、安装QEMU导致拉取失败" class="headerlink" title="1.同时拉取Linux内核、安装QEMU导致拉取失败"></a>1.同时拉取Linux内核、安装QEMU导致拉取失败</h2><p>一边拉取Linux内核一边安装QEMU，QEMU安装好了但是拉取这边受到了影响。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231207155935995.png" alt="image-20231207155935995"></p>
+<p><img src="/../imgs/setup_syzkaller/image-20231207155951417.png" alt="image-20231207155951417"></p>
+<p>解决办法：重新拉取。</p>
+<h2 id="2-磁盘空间不够。"><a href="#2-磁盘空间不够。" class="headerlink" title="2.磁盘空间不够。"></a>2.磁盘空间不够。</h2><p>解决办法：扩容</p>
+<p>具体过程见博客末尾一节。</p>
+<h1 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h1><h2 id="一、配置前置："><a href="#一、配置前置：" class="headerlink" title="一、配置前置："></a>一、配置前置：</h2><h3 id="1-安装make、gcc等"><a href="#1-安装make、gcc等" class="headerlink" title="1.安装make、gcc等"></a>1.安装make、gcc等</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install make gcc flex bison libncurses-dev libelf-dev libssl-dev</span><br></pre></td></tr></table></figure>
+
+<p>检查一下gcc和g++的版本。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231207101557737.png" alt="image-20231207101557737"></p>
+<p>再检查软链接是否指向正确的gcc、g++版本。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /user/bin</span><br><span class="line"></span><br><span class="line"><span class="built_in">ls</span> -il | grep gcc</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../imgs/setup_syzkaller/image-20231207101852612.png" alt="image-20231207101852612"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -il | grep g++</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../imgs/setup_syzkaller/image-20231207102009745.png" alt="image-20231207102009745"></p>
+<p>发现软链接都指向正确版本。如果没有，需要修改软链接。</p>
+<h3 id="2-安装golang"><a href="#2-安装golang" class="headerlink" title="2.安装golang"></a>2.安装golang</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install golang</span><br><span class="line">go version <span class="comment">#查看版本</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../imgs/setup_syzkaller/image-20231207155337840.png" alt="image-20231207155337840"></p>
+<h2 id="二、编译内核"><a href="#二、编译内核" class="headerlink" title="二、编译内核"></a>二、编译内核</h2><h3 id="1-拉取内核源码："><a href="#1-拉取内核源码：" class="headerlink" title="1.拉取内核源码："></a>1.拉取内核源码：</h3><p>清华源拉得稍微快一点。直接拉github拉真的拉得太慢。（挺慢：<a target="_blank" rel="noopener" href="https://github.com/torvalds/linux">torvalds&#x2F;linux: Linux kernel source tree (github.com)</a>）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://mirrors.tuna.tsinghua.edu.cn/git/linux.git</span><br></pre></td></tr></table></figure>
+
+<p>这是目前最新的版本，如果想要以前的旧版本可以自行替换。</p>
+<p>直接拉取后文件夹会被自动命名为linux。手册中使用 $VAR 符号（例如 $<em>GCC</em>、$KERNEL 等）来表示路径到目录，这些目录在执行指南时会被创建（例如解压 GCC 存档时会创建一个目录），或者在运行指南之前需要自己创建这些目录。请手动替换这些变量的值。</p>
+<p>由于名字不一样，在之后的命令中注意文件路径，改一下名字。</p>
+<p>耐心地等待拉取……</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231207163317549.png" alt="image-20231207163317549"></p>
+<h3 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h3><p>拉取好之后，生成默认配置文件。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> linux</span><br><span class="line">make CC=<span class="string">&quot;<span class="variable">$GCC</span>/bin/gcc&quot;</span> defconfig</span><br><span class="line">make CC=<span class="string">&quot;<span class="variable">$GCC</span>/bin/gcc&quot;</span> kvm_guest.config</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../imgs/setup_syzkaller/image-20231208085318104.png" alt="image-20231208085318104"></p>
+<p>手动编辑.config文件，或使用<code>make menuconfig</code>。至少需要修改以下内容：</p>
+<p>更详细的配置可以参考：<a target="_blank" rel="noopener" href="https://github.com/google/syzkaller/blob/master/docs/linux/kernel_configs.md">syzkaller&#x2F;docs&#x2F;linux&#x2F;kernel_configs.md at master · google&#x2F;syzkaller (github.com)</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># Coverage collection.</span><br><span class="line">CONFIG_KCOV=y</span><br><span class="line"></span><br><span class="line"># Debug info for symbolization.</span><br><span class="line">CONFIG_DEBUG_INFO_DWARF4=y</span><br><span class="line"></span><br><span class="line"># Memory bug detector</span><br><span class="line">CONFIG_KASAN=y</span><br><span class="line">CONFIG_KASAN_INLINE=y</span><br><span class="line"></span><br><span class="line"># Required for Debian Stretch and later</span><br><span class="line">CONFIG_CONFIGFS_FS=y</span><br><span class="line">CONFIG_SECURITYFS=y</span><br></pre></td></tr></table></figure>
+
+<p>重新生成配置文件：</p>
+<p>Command:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make olddefconfig</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../imgs/setup_syzkaller/image-20231208090953589.png" alt="image-20231208090953589"></p>
+<h3 id="3-编译内核（有坑）"><a href="#3-编译内核（有坑）" class="headerlink" title="3.编译内核（有坑）"></a>3.编译内核（有坑）</h3><p>Command:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j`<span class="built_in">nproc</span>`</span><br></pre></td></tr></table></figure>
+
+<p>编译失败，因为没有bc：</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208091301453.png" alt="image-20231208091301453"></p>
+<p>安装bc后再编译，这大概需要十五分钟。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208095206200.png" alt="image-20231208095206200"></p>
+<h3 id="4-检查是否成功"><a href="#4-检查是否成功" class="headerlink" title="4.检查是否成功"></a>4.检查是否成功</h3><p>查看<code>vmlinux</code> (kernel binary) 和 <code>bzImage</code> (packed kernel image):</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208101959479.png" alt="image-20231208101959479"></p>
+<h2 id="三、安装debootstrap"><a href="#三、安装debootstrap" class="headerlink" title="三、安装debootstrap"></a>三、安装debootstrap</h2><p>Command:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install debootstrap</span><br></pre></td></tr></table></figure>
+
+<p>（这个是我之前安装过的。）</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208102310776.png" alt="image-20231208102310776"></p>
+<h2 id="四、创建Debian-Bullseye-Linux-image（有坑）"><a href="#四、创建Debian-Bullseye-Linux-image（有坑）" class="headerlink" title="四、创建Debian Bullseye Linux image（有坑）"></a>四、创建Debian Bullseye Linux image（有坑）</h2><h3 id="1-创建生成镜像的脚本（有坑）"><a href="#1-创建生成镜像的脚本（有坑）" class="headerlink" title="1.创建生成镜像的脚本（有坑）"></a>1.创建生成镜像的脚本（有坑）</h3><p>Command:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir $IMAGE</span><br><span class="line">cd $IMAGE/</span><br><span class="line">wget https://raw.githubusercontent.com/google/syzkaller/master/tools/create-image.sh -O create-image.sh</span><br><span class="line">chmod +x create-image.sh</span><br><span class="line">./create-image.sh</span><br></pre></td></tr></table></figure>
+
+<p>在wget这一步发现网络链接有问题：</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208103425564.png" alt="image-20231208103425564"></p>
+<p>解决办法1（无效）：</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40973138/article/details/106081946%E4%BB%A5%E5%8F%8A%E7%B1%BB%E4%BC%BC%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%9A">https://blog.csdn.net/weixin_40973138/article/details/106081946以及类似的方法：</a></p>
+<p>查询raw.githubusercontent.com的ip</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208103511873.png" alt="image-20231208103511873"></p>
+<p>将ip加入&#x2F;etc&#x2F;hosts</p>
+<p>好像不行。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208105134258.png" alt="image-20231208105134258"></p>
+<p>解决办法2（无效）：修改DNS，不知道为什么还是不行。</p>
+<p>解决办法3：</p>
+<p>浪费一个大半个上午之后决定直接去把<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/google/syzkaller/master/tools/create-image.sh%E8%BF%99%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%8D%E5%88%B6%E4%B8%8B%E6%9D%A5%EF%BC%8C%E5%9C%A8IMAGE%E4%B8%8B%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA.sh%E5%91%BD%E5%90%8D%E4%B8%BAcreate-image.sh%EF%BC%8C%E6%8A%8A%E6%96%87%E4%BB%B6%E6%89%8B%E5%8A%A8%E5%A4%8D%E5%88%B6%E8%BF%9B%E5%8E%BB%E3%80%82">https://raw.githubusercontent.com/google/syzkaller/master/tools/create-image.sh这个文件复制下来，在IMAGE下新建一个.sh命名为create-image.sh，把文件手动复制进去。</a></p>
+<h3 id="2-运行脚本（有坑）"><a href="#2-运行脚本（有坑）" class="headerlink" title="2.运行脚本（有坑）"></a>2.运行脚本（有坑）</h3><p>运行：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x create-image.sh</span><br><span class="line">./create-image.sh</span><br></pre></td></tr></table></figure>
+
+<p>运行create-image.sh时又出现了报错：</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208120855723.png" alt="image-20231208120855723"></p>
+<p>跑到这个网址上一看，404了。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208120925309.png" alt="image-20231208120925309"></p>
+<p><del>（搞啥啊啊啊啊啊！！！！土拨鼠尖叫！！！）</del></p>
+<p>换源，使用国内Debian镜像</p>
+<p>[Debian镜像使用帮助 (163.com)</p>
+<p><a target="_blank" rel="noopener" href="https://mirrors.163.com/.help/debian.html"></a></p>
+<blockquote>
+<p>以Buster为例, 编辑&#x2F;etc&#x2F;apt&#x2F;sources.list文件, 在文件最前面添加以下条目(操作前请做好相应备份)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.163.com/debian/ buster main non-free contrib</span><br><span class="line">deb http://mirrors.163.com/debian/ buster-updates main non-free contrib</span><br><span class="line">deb http://mirrors.163.com/debian/ buster-backports main non-free contrib</span><br><span class="line">deb-src http://mirrors.163.com/debian/ buster main non-free contrib</span><br><span class="line">deb-src http://mirrors.163.com/debian/ buster-updates main non-free contrib</span><br><span class="line">deb-src http://mirrors.163.com/debian/ buster-backports main non-free contrib</span><br><span class="line">deb http://mirrors.163.com/debian-security/ buster/updates main non-free contrib</span><br><span class="line">deb-src http://mirrors.163.com/debian-security/ buster/updates main non-free contrib</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>编辑完&#x2F;etc&#x2F;apt&#x2F;sources.list之后，别忘了更新：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<p>更新时间有点长，倒也不是需要全部更新。</p>
+<p>然后再运行create-image.sh。等待一段时间之后，成功。</p>
+<h3 id="3-检查是否成功"><a href="#3-检查是否成功" class="headerlink" title="3.检查是否成功"></a>3.检查是否成功</h3><p>可以在IMAGE文件夹中看到有 <code>bullseye.img</code> 文件。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208130517910.png" alt="image-20231208130517910"></p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208131022047.png" alt="image-20231208131022047"></p>
+<p>至于手册中的Image extra tools，根据自身需要安装吧。</p>
+<h2 id="五、安装QEMU"><a href="#五、安装QEMU" class="headerlink" title="五、安装QEMU"></a>五、安装QEMU</h2><h3 id="1-安装qemu-system-x86"><a href="#1-安装qemu-system-x86" class="headerlink" title="1.安装qemu-system-x86"></a>1.安装qemu-system-x86</h3><p>Command:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install qemu-system-x86</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-验证是否成功"><a href="#2-验证是否成功" class="headerlink" title="2.验证是否成功"></a>2.验证是否成功</h3><h4 id="1-验证能否启动（有坑）"><a href="#1-验证能否启动（有坑）" class="headerlink" title="1.验证能否启动（有坑）"></a>1.验证能否启动（有坑）</h4><p>Command:</p>
+<p>其中-kernel和file根据自己的文件路径稍作修改，</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-x86_64 \</span><br><span class="line">	-m 2G \</span><br><span class="line">	-smp 2 \</span><br><span class="line">	-kernel <span class="built_in">arch</span>/x86/boot/bzImage \</span><br><span class="line">	-append <span class="string">&quot;console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0&quot;</span> \</span><br><span class="line">	-drive file=IMAGE/bullseye.img,format=raw \</span><br><span class="line">	-net user,host=10.0.2.10,hostfwd=tcp:127.0.0.1:10021-:22 \</span><br><span class="line">	-net nic,model=e1000 \</span><br><span class="line">	-enable-kvm \</span><br><span class="line">	-nographic \</span><br><span class="line">	-pidfile vm.pid \</span><br><span class="line">	2&gt;&amp;1 | <span class="built_in">tee</span> vm.log</span><br></pre></td></tr></table></figure>
+
+<h5 id="报错1：无法访问KVM内核模块"><a href="#报错1：无法访问KVM内核模块" class="headerlink" title="报错1：无法访问KVM内核模块"></a><strong>报错1：无法访问KVM内核模块</strong></h5><p><img src="/../imgs/setup_syzkaller/image-20231208145336238.png" alt="image-20231208145336238"></p>
+<p>Could not access KVM kernel module: No such file or directory<br>qemu-system-x86_64: failed to initialize kvm: No such file or directory</p>
+<p><strong>分析：</strong></p>
+<p>问题发生场景为在虚拟机中嵌套使用虚拟机，因此不光物理机要支持<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E8%99%9A%E6%8B%9F%E5%8C%96&spm=1001.2101.3001.7020">虚拟化</a>，同时虚拟机也要支持虚拟化，即嵌套虚拟化问题。</p>
+<p>解决办法：在虚拟机设置中开启虚拟化。</p>
+<p>如果不行，可以参考：[vmware中创建qemu的嵌套虚拟化问题_vmware虚拟机嵌套-CSDN博客</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/cs0911051221/article/details/131451265"></a></p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208145642484.png" alt="image-20231208145642484"></p>
+<p>结果又报错啦！<del>（我精神状态好得很呀）</del></p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208150818083.png" alt="image-20231208150818083"></p>
+<p>原因分析：</p>
+<p>不要同时开启<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=hyper-V&spm=1001.2101.3001.7020">hyper-V</a>和VMware虚拟机软件，两者只能选择其一来使用，要用VMware虚拟机就必须关闭hyper-V 。</p>
+<p>使用以下代码关闭Hyper-V，然后重启主机。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /set hypervisorlaunchtype off</span><br></pre></td></tr></table></figure>
+
+<p>再次启动QEMU。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208152848208.png" alt="image-20231208152848208"></p>
+<h5 id="报错2：Failed-to-mount-sys-kernel-config"><a href="#报错2：Failed-to-mount-sys-kernel-config" class="headerlink" title="报错2：Failed to mount &#x2F;sys&#x2F;kernel&#x2F;config"></a>报错2：Failed to mount &#x2F;sys&#x2F;kernel&#x2F;config</h5><p>发现有报错，所以现在是emergency mode.</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208153101925.png" alt="image-20231208153101925"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status sys-kernel-config.mount</span><br></pre></td></tr></table></figure>
+
+<p>看一下是什么情况</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208154012621.png" alt="image-20231208154012621"></p>
+<p>好像是config配置文件有什么问题？有可能是当时编辑.config的时候手滑输错了什么或者别的什么问题。左思右想之后还是决定重来一次。</p>
+<p>然后我回到了第二步，重新编译内核，创建镜像，又折腾半个下午。第二次总算成功啦！！</p>
+<h4 id="2-成功启动QEMU"><a href="#2-成功启动QEMU" class="headerlink" title="2.成功启动QEMU"></a>2.成功启动QEMU</h4><p>可以看到有登陆界面。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208173619247.png" alt="image-20231208173619247"></p>
+<p>登陆的用户名为root，不需要密码，回车即可。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208174421862.png" alt="image-20231208174421862"></p>
+<h4 id="3-验证能否ssh"><a href="#3-验证能否ssh" class="headerlink" title="3.验证能否ssh"></a>3.验证能否ssh</h4><p>在另一个终端里ssh登陆：（注意密钥的路径）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i linux/IMAGE/bullseye.id_rsa -p 10021 -o <span class="string">&quot;StrictHostKeyChecking no&quot;</span> root@localhost</span><br></pre></td></tr></table></figure>
+
+<p>这样就登陆成功啦！</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208174728423.png" alt="image-20231208174728423"></p>
+<h2 id="六、下载syzkaller"><a href="#六、下载syzkaller" class="headerlink" title="六、下载syzkaller"></a>六、下载syzkaller</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/google/syzkaller</span><br><span class="line"><span class="built_in">cd</span> syzkaller</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<h3 id=""><a href="#" class="headerlink" title=""></a><img src="/../imgs/setup_syzkaller/image-20231208180351416.png" alt="image-20231208180351416"></h3><h2 id="七、测试"><a href="#七、测试" class="headerlink" title="七、测试"></a>七、测试</h2><h3 id="1-修改syzkaller配置文件"><a href="#1-修改syzkaller配置文件" class="headerlink" title="1.修改syzkaller配置文件"></a>1.修改syzkaller配置文件</h3><p>在syzkaller文件夹下新建文件夹：workdir,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> syzkaller</span><br><span class="line"><span class="built_in">mkdir</span> workdir</span><br></pre></td></tr></table></figure>
+
+<p>在syzkaller文件夹下新建文件：my.cfg，写入：</p>
+<p>其中workdir,image等的路径根据自己的配置修改。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;target&quot;: &quot;linux/amd64&quot;,</span><br><span class="line">  &quot;http&quot;: &quot;127.0.0.1:56741&quot;,</span><br><span class="line">  &quot;workdir&quot;: &quot;/root/syzkaller/workdir&quot;,</span><br><span class="line">  &quot;kernel_obj&quot;: &quot;/root/linux&quot;,</span><br><span class="line">  &quot;image&quot;: &quot;/root/linux/IMAGE/bullseye.img&quot;,</span><br><span class="line">  &quot;sshkey&quot;: &quot;/root/linux/IMAGE/bullseye.id_rsa&quot;,</span><br><span class="line">  &quot;syzkaller&quot;: &quot;/root/syzkaller&quot;,</span><br><span class="line">  &quot;procs&quot;: 8,</span><br><span class="line">  &quot;type&quot;: &quot;qemu&quot;,</span><br><span class="line">  &quot;vm&quot;: &#123;</span><br><span class="line">    &quot;count&quot;: 4,</span><br><span class="line">    &quot;kernel&quot;: &quot;/root/linux/arch/x86/boot/bzImage&quot;,</span><br><span class="line">    &quot;cpu&quot;: 2,</span><br><span class="line">    &quot;mem&quot;: 2048</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/syz-manager -config=my.cfg</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-进行测试"><a href="#2-进行测试" class="headerlink" title="2.进行测试"></a>2.进行测试</h3><p>在测试的时候一直连不上，最后超时报错。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208182227076.png" alt="image-20231208182227076"></p>
+<p>发现无法启动网络接口：</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208182306123.png" alt="image-20231208182306123"></p>
+<p>在测试QEMU时是没有发现这个问题的，因为syzkaller的qemu启动命令与测试的qemu命令不一样，下图是测试时的情景。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208182833852.png" alt="image-20231208182833852"></p>
+<p>参考了这篇博客的解决方法：<a target="_blank" rel="noopener" href="https://www.giantbranch.cn/2021/06/25/syzkaller%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E8%BF%90%E8%A1%8C/">syzkaller的安装与运行 | giantbranch’s blog</a></p>
+<p>使用测试qemu的命令启动，之后修改&#x2F;etc&#x2F;network&#x2F;interfaces中的eth0改为enp0s4</p>
+<p>最后终于成功运行了！！！</p>
+<h3 id="3-验证是否成功"><a href="#3-验证是否成功" class="headerlink" title="3.验证是否成功"></a>3.验证是否成功</h3><p>在命令行和网页端都可以看见syzkaller在正常运行。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208184449710.png" alt="image-20231208184449710"></p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208184510791.png" alt="image-20231208184510791"></p>
+<p>喜大普奔！！！！！</p>
+<h1 id="附：磁盘扩容："><a href="#附：磁盘扩容：" class="headerlink" title="附：磁盘扩容："></a>附：磁盘扩容：</h1><p>编译内核的时候报错说没有可用空间了，然后去虚拟机设置那里分配了更多的内存，结果登陆的时候原先的用户名和密码登不进去了。更改root密码，再登陆。幸好文件和配置没有丢失。</p>
+<p>查看一下文件系统的使用情况。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../imgs/setup_syzkaller/image-20231207170721097.png" alt="image-20231207170721097"></p>
+<p>解决办法：</p>
+<p>想使用bleachbit清理一下不需要的文件，结果发现bleachbit还没有安装，甚至没有安装空间了，只好先把拉取下来的内核源码删掉（回收站里也要删），安装上bleachbit</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install bleachbit</span><br><span class="line">sudo bleachbit</span><br></pre></td></tr></table></figure>
+
+<p>删掉内核源码之后再查看文件系统使用情况：</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231207172110898.png" alt="image-20231207172110898"></p>
+<p>删掉一些缓存文件等等再查看文件系统使用情况：</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231207172549769.png" alt="image-20231207172549769"></p>
+<p>如果还是不够怎么办呢？</p>
+<p>切换到根目录下面看一下是什么占用了那么多内存。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="built_in">du</span> -h -x --max-depth=1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../imgs/setup_syzkaller/image-20231207172850230.png" alt="image-20231207172850230"></p>
+<p>好像没啥可删的了，还是把源码拉回来吧。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231207174857782.png" alt="image-20231207174857782"></p>
+<p>呃。。。。。。还是扩容吧。</p>
+<p>先在主机上分配更多的硬盘空间（我把最大从20G改为35G，读者按需更改），然后在虚拟机内部增加空间。</p>
+<p><img src="/../imgs/setup_syzkaller/image-20231207175459304.png" alt="image-20231207175459304"></p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208002915660.png" alt="image-20231208002915660"></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/574737232">https://zhuanlan.zhihu.com/p/574737232</a></p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208002935931.png" alt="image-20231208002935931"></p>
+<p><img src="/../imgs/setup_syzkaller/image-20231208003900125.png" alt="image-20231208003900125"></p>
+<p><strong>原理</strong></p>
+<p>我们是不能直接给<code>/dev/sda1</code>分区调整大小的。只能通过<code>swap</code>（交换空间）进行中转。然后再调整<code>/dev/sda1</code>分区的大小就行了。最后一定要记得保存！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Jellyfish0029.github.io">xjelly</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://jellyfish0029.github.io/2023/12/07/setup_of_syzkaller/">https://jellyfish0029.github.io/2023/12/07/setup_of_syzkaller/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Jellyfish0029.github.io" target="_blank">Xjelly‘s Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/images_config/index_img.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.png" target="_blank"><img class="post-qr-code-img" src="/img/wechat.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="/img/alipay.png" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/12/05/A1/" title="A1：SQL Injection 1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">A1：SQL Injection 1</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images_config/index_img.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">xjelly</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Jellyfish0029" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xjelly0029@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E6%83%85%E5%86%B5"><span class="toc-number">1.</span> <span class="toc-text">踩坑情况:</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">一、配置过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%97%B6%E7%BC%BA%E7%A8%8B%E5%BA%8F%EF%BC%9Abc"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.编译内核时缺程序：bc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F%E6%97%B6wget%E6%97%B6%E6%8B%92%E7%BB%9D%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.创建镜像时wget时拒绝连接</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%951%EF%BC%88%E6%97%A0%E6%95%88%EF%BC%89%EF%BC%9A"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">解决办法1（无效）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%952%EF%BC%88%E6%97%A0%E6%95%88%EF%BC%89%EF%BC%9A"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">解决办法2（无效）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%953%EF%BC%88%E6%88%90%E5%8A%9F%EF%BC%89%EF%BC%9A"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">解决办法3（成功）：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%90%E8%A1%8Ccreate-image-sh%E6%97%B6%E6%97%A0%E6%B3%95%E4%B8%8B%E8%BD%BD%E6%89%80%E9%9C%80%E7%9A%84%E5%8C%85"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.运行create-image.sh时无法下载所需的包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%90%AF%E5%8A%A8QEMU%E6%97%B6%E5%9C%A8%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E5%B5%8C%E5%A5%97%E4%BD%BF%E7%94%A8%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.启动QEMU时在虚拟机中嵌套使用虚拟机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%90%AF%E5%8A%A8QEMU%E6%97%B6%E6%8A%A5%E9%94%99"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.启动QEMU时报错</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%B5%8B%E8%AF%95syzkaller%E6%97%B6%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.6.</span> <span class="toc-text">6.测试syzkaller时无法启动网络接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%85%B6%E4%BB%96%E5%9D%91"><span class="toc-number">1.2.</span> <span class="toc-text">二、其他坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%90%8C%E6%97%B6%E6%8B%89%E5%8F%96Linux%E5%86%85%E6%A0%B8%E3%80%81%E5%AE%89%E8%A3%85QEMU%E5%AF%BC%E8%87%B4%E6%8B%89%E5%8F%96%E5%A4%B1%E8%B4%A5"><span class="toc-number">1.3.</span> <span class="toc-text">1.同时拉取Linux内核、安装QEMU导致拉取失败</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E4%B8%8D%E5%A4%9F%E3%80%82"><span class="toc-number">1.4.</span> <span class="toc-text">2.磁盘空间不够。</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">配置过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%85%8D%E7%BD%AE%E5%89%8D%E7%BD%AE%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">一、配置前置：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85make%E3%80%81gcc%E7%AD%89"><span class="toc-number">2.1.1.</span> <span class="toc-text">1.安装make、gcc等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85golang"><span class="toc-number">2.1.2.</span> <span class="toc-text">2.安装golang</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8"><span class="toc-number">2.2.</span> <span class="toc-text">二、编译内核</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8B%89%E5%8F%96%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%EF%BC%9A"><span class="toc-number">2.2.1.</span> <span class="toc-text">1.拉取内核源码：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%EF%BC%88%E6%9C%89%E5%9D%91%EF%BC%89"><span class="toc-number">2.2.3.</span> <span class="toc-text">3.编译内核（有坑）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F"><span class="toc-number">2.2.4.</span> <span class="toc-text">4.检查是否成功</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%89%E8%A3%85debootstrap"><span class="toc-number">2.3.</span> <span class="toc-text">三、安装debootstrap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%88%9B%E5%BB%BADebian-Bullseye-Linux-image%EF%BC%88%E6%9C%89%E5%9D%91%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">四、创建Debian Bullseye Linux image（有坑）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E7%94%9F%E6%88%90%E9%95%9C%E5%83%8F%E7%9A%84%E8%84%9A%E6%9C%AC%EF%BC%88%E6%9C%89%E5%9D%91%EF%BC%89"><span class="toc-number">2.4.1.</span> <span class="toc-text">1.创建生成镜像的脚本（有坑）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC%EF%BC%88%E6%9C%89%E5%9D%91%EF%BC%89"><span class="toc-number">2.4.2.</span> <span class="toc-text">2.运行脚本（有坑）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F"><span class="toc-number">2.4.3.</span> <span class="toc-text">3.检查是否成功</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%AE%89%E8%A3%85QEMU"><span class="toc-number">2.5.</span> <span class="toc-text">五、安装QEMU</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85qemu-system-x86"><span class="toc-number">2.5.1.</span> <span class="toc-text">1.安装qemu-system-x86</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F"><span class="toc-number">2.5.2.</span> <span class="toc-text">2.验证是否成功</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E9%AA%8C%E8%AF%81%E8%83%BD%E5%90%A6%E5%90%AF%E5%8A%A8%EF%BC%88%E6%9C%89%E5%9D%91%EF%BC%89"><span class="toc-number">2.5.2.1.</span> <span class="toc-text">1.验证能否启动（有坑）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E9%94%991%EF%BC%9A%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AEKVM%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97"><span class="toc-number">2.5.2.1.1.</span> <span class="toc-text">报错1：无法访问KVM内核模块</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E9%94%992%EF%BC%9AFailed-to-mount-sys-kernel-config"><span class="toc-number">2.5.2.1.2.</span> <span class="toc-text">报错2：Failed to mount &#x2F;sys&#x2F;kernel&#x2F;config</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%88%90%E5%8A%9F%E5%90%AF%E5%8A%A8QEMU"><span class="toc-number">2.5.2.2.</span> <span class="toc-text">2.成功启动QEMU</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E9%AA%8C%E8%AF%81%E8%83%BD%E5%90%A6ssh"><span class="toc-number">2.5.2.3.</span> <span class="toc-text">3.验证能否ssh</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%B8%8B%E8%BD%BDsyzkaller"><span class="toc-number">2.6.</span> <span class="toc-text">六、下载syzkaller</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.6.1.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%B5%8B%E8%AF%95"><span class="toc-number">2.7.</span> <span class="toc-text">七、测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BF%AE%E6%94%B9syzkaller%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.7.1.</span> <span class="toc-text">1.修改syzkaller配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="toc-number">2.7.2.</span> <span class="toc-text">2.进行测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F"><span class="toc-number">2.7.3.</span> <span class="toc-text">3.验证是否成功</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%EF%BC%9A%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">附：磁盘扩容：</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/07/setup_of_syzkaller/" title="Set up Syzkaller (记录安装过程)">Set up Syzkaller (记录安装过程)</a><time datetime="2023-12-07T01:53:24.000Z" title="发表于 2023-12-07 09:53:24">2023-12-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/05/A1/" title="A1：SQL Injection 1">A1：SQL Injection 1</a><time datetime="2023-12-05T02:18:23.000Z" title="发表于 2023-12-05 10:18:23">2023-12-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/30/Signature/" title="Signature 签名">Signature 签名</a><time datetime="2023-11-30T05:18:09.000Z" title="发表于 2023-11-30 13:18:09">2023-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/29/Crypto%20Basic%201/" title="Crypto Basics 1">Crypto Basics 1</a><time datetime="2023-11-29T13:25:19.000Z" title="发表于 2023-11-29 21:25:19">2023-11-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/21/SEED%20LAB4%20Format%20String/" title="SEED LAB4 Format String">SEED LAB4 Format String</a><time datetime="2023-11-21T08:14:36.174Z" title="发表于 2023-11-21 16:14:36">2023-11-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By xjelly</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
