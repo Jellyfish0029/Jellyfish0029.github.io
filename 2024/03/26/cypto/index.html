@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>散列函数与认证 | Xjelly's Blog</title><meta name="author" content="xjelly"><meta name="copyright" content="xjelly"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="一、简介 认证： 防止主动攻击，如伪装、篡改、干扰 实体认证： 验证发送者是真的，不是冒充的。 消息认证： 验证消息的完整性，没有被篡改、重放、延迟。 认证系统的组成： 认证编码器 认证译码器 认证系统的工作原理： 发送方使用认证函数来产生一个认证标识，接收方使用认证协议，基于验证标识验证真实性。 认证函数的分类： 1.加密函数：用整个消息的密文作为消息认证的认证标识；（例如cbc） 2.消息认证">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>散列函数与认证 | Xjelly's Blog</title><meta name="author" content="xjelly"><meta name="copyright" content="xjelly"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="一、简介认证：防止主动攻击，如伪装、篡改、干扰实体认证：验证发送者是真的，不是冒充的。消息认证：验证消息的完整性，没有被篡改、重放、延迟。认证系统的组成：认证编码器认证译码器认证系统的工作原理：发送方使用认证函数来产生一个认证标识，接收方使用认证协议，基于验证标识验证真实性。认证函数的分类：1.加密函数：用整个消息的密文作为消息认证的认证标识；（例如cbc）2.消息认证码(MAC)：指消息被一密钥">
 <meta property="og:type" content="article">
 <meta property="og:title" content="散列函数与认证">
 <meta property="og:url" content="https://jellyfish0029.github.io/2024/03/26/cypto/index.html">
 <meta property="og:site_name" content="Xjelly&#39;s Blog">
-<meta property="og:description" content="一、简介 认证： 防止主动攻击，如伪装、篡改、干扰 实体认证： 验证发送者是真的，不是冒充的。 消息认证： 验证消息的完整性，没有被篡改、重放、延迟。 认证系统的组成： 认证编码器 认证译码器 认证系统的工作原理： 发送方使用认证函数来产生一个认证标识，接收方使用认证协议，基于验证标识验证真实性。 认证函数的分类： 1.加密函数：用整个消息的密文作为消息认证的认证标识；（例如cbc） 2.消息认证">
+<meta property="og:description" content="一、简介认证：防止主动攻击，如伪装、篡改、干扰实体认证：验证发送者是真的，不是冒充的。消息认证：验证消息的完整性，没有被篡改、重放、延迟。认证系统的组成：认证编码器认证译码器认证系统的工作原理：发送方使用认证函数来产生一个认证标识，接收方使用认证协议，基于验证标识验证真实性。认证函数的分类：1.加密函数：用整个消息的密文作为消息认证的认证标识；（例如cbc）2.消息认证码(MAC)：指消息被一密钥">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://jellyfish0029.github.io/images_config/index_img.jpg">
 <meta property="article:published_time" content="2024-03-26T12:34:55.000Z">
@@ -154,120 +154,25 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images_config/index_img.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/ramblings/"><i class="fa-fw fas fa-pencil"></i><span> 随笔</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images_config/ar2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Xjelly's Blog"><span class="site-name">Xjelly's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/ramblings/"><i class="fa-fw fas fa-pencil"></i><span> 随笔</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">散列函数与认证</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-26T12:34:55.000Z" title="发表于 2024-03-26 20:34:55">2024-03-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-26T12:41:15.145Z" title="更新于 2024-03-26 20:41:15">2024-03-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="散列函数与认证"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="一、简介">一、简介</h2>
-<p><strong>认证：</strong><br>
-防止主动攻击，如伪装、篡改、干扰<br>
-<strong>实体认证：</strong><br>
-验证发送者是真的，不是冒充的。<br>
-<strong>消息认证：</strong><br>
-验证消息的完整性，没有被篡改、重放、延迟。<br>
-<strong>认证系统的组成：</strong><br>
-认证编码器<br>
-认证译码器<br>
-<strong>认证系统的工作原理：</strong><br>
-发送方使用认证函数来产生一个认证标识，接收方使用认证协议，基于验证标识验证真实性。<br>
-<strong>认证函数的分类：</strong><br>
-<strong>1.加密函数</strong>：用<strong>整个消息的密文</strong>作为消息认证的认证标识；（例如cbc）<br>
-<strong>2.消息认证码(MAC)</strong>：指消息被一<strong>密钥控制的公开函数</strong>作用后产生的、用作认证符的、<strong>固定长度</strong>的数值，也称为密码校验和；<br>
-<strong>3.散列函数</strong>：一个<strong>不需要密钥的公开函数</strong>，将任意长度的输入消息映射成一个<strong>固定长度</strong>的输出值，并以此值作为认证标识别。<br>
-<strong>认证系统的基本设计标准：</strong><br>
-特定的接收者能够检验和证实消息的合法性、真实性和完整性；<br>
-消息的发送者和接收者不能抵赖；<br>
-除了合法的消息发送者，其它人不能伪造合法的消息。</p>
-<p><strong>备注：</strong><br>
-1.消息记作m，认证标识记作$C_{m}$，通常长度上来说$C_{m}&lt; m$ 。用$C_{m}$校验$m$的完整性，$C_{m}$要继承m所有的特征属性。<br>
-2.固定长度的隐患：<br>
-把一个不固定长度的输入映射到一个固定长度的空间，前者是个很大的空间，后者相比之下是个极小的空间。有可能使得有两个密文对应同一个消息验证码。如果攻击者把消息替换了，但验证码还是不变，失去了验证功能。<br>
-此为“碰撞”。需要仔细设计认证函数，使得碰撞很难。</p>
-<h2 id="二、基于消息加密的认证">二、基于消息加密的认证</h2>
-<h3 id="1-对称加密体制实现加密和认证">1.对称加密体制实现加密和认证</h3>
-<p>基于密钥的保密性，在加密时可以提供认证。<br>
-不足在于：<br>
-1.不能数字签名。接收方可伪造，发送方可否认，因为无法证明消息确实是由特定发送方发送的，理论上任何拥有密钥的人都可以生成相同的消息。<br>
-2.需要额外的差错检验来确保消息的完整性。例如分组加密的CBC模式，最后一个密文块确实与整个消息的内容有关，但它本身并不提供消息的真实性或完整性保证。如果攻击者篡改了密文中的某一块，这种改变会在解密时传播，导致特定块的明文发生变化，这不足以作为有效的“验证标识”来确认消息的完整性和真实性。</p>
-<h3 id="2-非对称加密体制实现加密和认证">2.非对称加密体制实现加密和认证</h3>
-<p>非对称密码体制可以用来加密、认证、签名。<br>
-在发送者用自己的私钥签名以后，用接收者的公钥进行加密。接收者用自己的私钥解密消息后，用发送者的公钥验证签名。（注：这是两套不同的密钥。）<br>
-不足之处在于双方都要进行两次密码变换，开销比较大。</p>
-<h2 id="三、消息认证码">三、消息认证码</h2>
-<p>指消息被一密钥控制的公开函数作用后产生的、用作认证符的、固定长度的数值，也称为密码校验和。<br>
-<strong>工作原理：</strong><br>
-明文记作m。<br>
-A首先计算$MAC = C_k(m)$，其中$C_k(·)$是密钥控制的公开函数，然后向B发送$m || MAC$；(m串接MAC)<br>
-B收到后做与A相同的计算，求得一新MAC，并与收到的MAC做比较。<br>
-如果两者相等，就认为报文没有被篡改，并相信报文来自声称的发送者。如果两者不等，认证不通过。<br>
-<strong>不足：</strong><br>
-1.无数字签名，因为认证编码密钥和解码密钥相同。<br>
-2.不提供消息的机密性，因为MAC函数无需可逆，不能用MAC来加密。<br>
-<strong>改进：</strong> 实现加密机制。<br>
-1.与明文相关<br>
-$E_{k2}(m || C_{k1}(m))$  把整个报文加密.<br>
-加密的长度更大，计算开销更大，安全性相对较好。<br>
-2.与密文相关<br>
-$E_{k2}(m) || C_{k1}(E_{k2}(m))$ 把明文加密，计算密文的验证码，两者串接起来。</p>
-<h3 id="四、散列函数">四、散列函数</h3>
-<p>hash函数是一个单向函数，把消息映射为固定长度的结果，是不可逆的，不需要用认证码还原消息。</p>
-<h4 id="1-设计目标：">1.设计目标：</h4>
-<p>1.函数的输入$x$是任意长；<br>
-2.函数的输出$H(x)$是固定长；<br>
-3.已知$x$，求$H(x)$较为容易，可以用硬件或软件实现；<br>
-(前三条是Hash函数用于消息验证的基本要求。)<br>
-4.已知$h$，求使得$H(x) = h$的$x$在计算上是不可行的；<br>
-(用于带秘密值得认证，如$c=H(s||m)$，如果已知$c$就能求出$s||m$,则秘密值泄露。)<br>
-5.已知$x$，找出$y(y≠x)$使得$H(x) = H(y)$在计算上是不可行的;<br>
-(弱单向性：用于防止消息被伪造。发送方发送的消息$x$被伪造成$y$了。)<br>
-6.找出任意两个不同的输入$x,y$，使得$H(x) = H(y)$在计算上是不可行的。<br>
-(强单向性：用于抵抗生日攻击。)</p>
-<h4 id="2-生日攻击：">2.生日攻击：</h4>
-<p>(哈希函数H有n个可能的输出，输出为m比特长)</p>
-<h5 id="第I类生日攻击">第I类生日攻击</h5>
-<p>H(x)是一个特定的输出，如果对H随机取k个输入，则至少有一个输入y使得H(y) = H(x)的概率为0.5时，k有多大？</p>
-<h5 id="第II类生日攻击">第II类生日攻击</h5>
-<p>如果对H随机取k个输入，则至少有两个输入产生相同输出的概率大于0.5，k应该有多大？</p>
-<h4 id="3-迭代型Hash函数">3.迭代型Hash函数</h4>
-<h5 id="介绍">介绍</h5>
-<p>MD5：产生128位的信息摘要。<br>
-MD5以512位分组来处理输入文本，输入$M$分为$L$个分组$Y_0, Y_1, …, Y_{L-1}$.每个分组512 bit。每一分组又划分为16个32位子分组，这就是16个字。（一个字四字节，4Byte=32bit）。算法的输出由四个32位分组组成，将它们级联形成一个128位散列值。<br>
-![Pasted image 20240326111352.png](…/imgs/密码学笔记/Pasted image 20240326111352.png)</p>
-<p>每次$H_{MD5}$ 把一个分组$Y$由512位压缩到128位，再和缓冲区中的$CV_{i}$或者$IV$相加，得到输出。最后一次的输出作为消息摘要值。$H(M) = CV_{L}$</p>
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images_config/index_img.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/ramblings/"><i class="fa-fw fas fa-pencil"></i><span> 随笔</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images_config/ar2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Xjelly's Blog"><span class="site-name">Xjelly's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/ramblings/"><i class="fa-fw fas fa-pencil"></i><span> 随笔</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">散列函数与认证</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-26T12:34:55.000Z" title="发表于 2024-03-26 20:34:55">2024-03-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-26T12:41:15.145Z" title="更新于 2024-03-26 20:41:15">2024-03-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="散列函数与认证"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p><strong>认证：</strong><br>防止主动攻击，如伪装、篡改、干扰<br><strong>实体认证：</strong><br>验证发送者是真的，不是冒充的。<br><strong>消息认证：</strong><br>验证消息的完整性，没有被篡改、重放、延迟。<br><strong>认证系统的组成：</strong><br>认证编码器<br>认证译码器<br><strong>认证系统的工作原理：</strong><br>发送方使用认证函数来产生一个认证标识，接收方使用认证协议，基于验证标识验证真实性。<br><strong>认证函数的分类：</strong><br><strong>1.加密函数</strong>：用<strong>整个消息的密文</strong>作为消息认证的认证标识；（例如cbc）<br><strong>2.消息认证码(MAC)<strong>：指消息被一</strong>密钥控制的公开函数</strong>作用后产生的、用作认证符的、<strong>固定长度</strong>的数值，也称为密码校验和；<br><strong>3.散列函数</strong>：一个<strong>不需要密钥的公开函数</strong>，将任意长度的输入消息映射成一个<strong>固定长度</strong>的输出值，并以此值作为认证标识别。<br><strong>认证系统的基本设计标准：</strong><br>特定的接收者能够检验和证实消息的合法性、真实性和完整性；<br>消息的发送者和接收者不能抵赖；<br>除了合法的消息发送者，其它人不能伪造合法的消息。</p>
+<p><strong>备注：</strong><br>1.消息记作m，认证标识记作$C_{m}$，通常长度上来说$C_{m}&lt; m$ 。用$C_{m}$校验$m$的完整性，$C_{m}$要继承m所有的特征属性。<br>2.固定长度的隐患：<br>把一个不固定长度的输入映射到一个固定长度的空间，前者是个很大的空间，后者相比之下是个极小的空间。有可能使得有两个密文对应同一个消息验证码。如果攻击者把消息替换了，但验证码还是不变，失去了验证功能。<br>此为“碰撞”。需要仔细设计认证函数，使得碰撞很难。</p>
+<h2 id="二、基于消息加密的认证"><a href="#二、基于消息加密的认证" class="headerlink" title="二、基于消息加密的认证"></a>二、基于消息加密的认证</h2><h3 id="1-对称加密体制实现加密和认证"><a href="#1-对称加密体制实现加密和认证" class="headerlink" title="1.对称加密体制实现加密和认证"></a>1.对称加密体制实现加密和认证</h3><p>基于密钥的保密性，在加密时可以提供认证。<br>不足在于：<br>1.不能数字签名。接收方可伪造，发送方可否认，因为无法证明消息确实是由特定发送方发送的，理论上任何拥有密钥的人都可以生成相同的消息。<br>2.需要额外的差错检验来确保消息的完整性。例如分组加密的CBC模式，最后一个密文块确实与整个消息的内容有关，但它本身并不提供消息的真实性或完整性保证。如果攻击者篡改了密文中的某一块，这种改变会在解密时传播，导致特定块的明文发生变化，这不足以作为有效的“验证标识”来确认消息的完整性和真实性。</p>
+<h3 id="2-非对称加密体制实现加密和认证"><a href="#2-非对称加密体制实现加密和认证" class="headerlink" title="2.非对称加密体制实现加密和认证"></a>2.非对称加密体制实现加密和认证</h3><p>非对称密码体制可以用来加密、认证、签名。<br>在发送者用自己的私钥签名以后，用接收者的公钥进行加密。接收者用自己的私钥解密消息后，用发送者的公钥验证签名。（注：这是两套不同的密钥。）<br>不足之处在于双方都要进行两次密码变换，开销比较大。</p>
+<h2 id="三、消息认证码"><a href="#三、消息认证码" class="headerlink" title="三、消息认证码"></a>三、消息认证码</h2><p>指消息被一密钥控制的公开函数作用后产生的、用作认证符的、固定长度的数值，也称为密码校验和。<br><strong>工作原理：</strong><br>明文记作m。<br>A首先计算$MAC &#x3D; C_k(m)$，其中$C_k(·)$是密钥控制的公开函数，然后向B发送$m || MAC$；(m串接MAC)<br>B收到后做与A相同的计算，求得一新MAC，并与收到的MAC做比较。<br>如果两者相等，就认为报文没有被篡改，并相信报文来自声称的发送者。如果两者不等，认证不通过。<br><strong>不足：</strong><br>1.无数字签名，因为认证编码密钥和解码密钥相同。<br>2.不提供消息的机密性，因为MAC函数无需可逆，不能用MAC来加密。<br><strong>改进：</strong> 实现加密机制。<br>1.与明文相关<br>$E_{k2}(m || C_{k1}(m))$  把整个报文加密.<br>加密的长度更大，计算开销更大，安全性相对较好。<br>2.与密文相关<br>$E_{k2}(m) || C_{k1}(E_{k2}(m))$ 把明文加密，计算密文的验证码，两者串接起来。</p>
+<h3 id="四、散列函数"><a href="#四、散列函数" class="headerlink" title="四、散列函数"></a>四、散列函数</h3><p>hash函数是一个单向函数，把消息映射为固定长度的结果，是不可逆的，不需要用认证码还原消息。</p>
+<h4 id="1-设计目标："><a href="#1-设计目标：" class="headerlink" title="1.设计目标："></a>1.设计目标：</h4><p>1.函数的输入$x$是任意长；<br>2.函数的输出$H(x)$是固定长；<br>3.已知$x$，求$H(x)$较为容易，可以用硬件或软件实现；<br>(前三条是Hash函数用于消息验证的基本要求。)<br>4.已知$h$，求使得$H(x) &#x3D; h$的$x$在计算上是不可行的；<br>(用于带秘密值得认证，如$c&#x3D;H(s||m)$，如果已知$c$就能求出$s||m$,则秘密值泄露。)<br>5.已知$x$，找出$y(y≠x)$使得$H(x) &#x3D; H(y)$在计算上是不可行的;<br>(弱单向性：用于防止消息被伪造。发送方发送的消息$x$被伪造成$y$了。)<br>6.找出任意两个不同的输入$x,y$，使得$H(x) &#x3D; H(y)$在计算上是不可行的。<br>(强单向性：用于抵抗生日攻击。)</p>
+<h4 id="2-生日攻击："><a href="#2-生日攻击：" class="headerlink" title="2.生日攻击："></a>2.生日攻击：</h4><p>(哈希函数H有n个可能的输出，输出为m比特长)</p>
+<h5 id="第I类生日攻击"><a href="#第I类生日攻击" class="headerlink" title="第I类生日攻击"></a>第I类生日攻击</h5><p>H(x)是一个特定的输出，如果对H随机取k个输入，则至少有一个输入y使得H(y) &#x3D; H(x)的概率为0.5时，k有多大？</p>
+<h5 id="第II类生日攻击"><a href="#第II类生日攻击" class="headerlink" title="第II类生日攻击"></a>第II类生日攻击</h5><p>如果对H随机取k个输入，则至少有两个输入产生相同输出的概率大于0.5，k应该有多大？</p>
+<h4 id="3-迭代型Hash函数"><a href="#3-迭代型Hash函数" class="headerlink" title="3.迭代型Hash函数"></a>3.迭代型Hash函数</h4><h5 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h5><p>MD5：产生128位的信息摘要。<br>MD5以512位分组来处理输入文本，输入$M$分为$L$个分组$Y_0, Y_1, …, Y_{L-1}$.每个分组512 bit。每一分组又划分为16个32位子分组，这就是16个字。（一个字四字节，4Byte&#x3D;32bit）。算法的输出由四个32位分组组成，将它们级联形成一个128位散列值。<br>![Pasted image 20240326111352.png](..&#x2F;imgs&#x2F;密码学笔记&#x2F;Pasted image 20240326111352.png)</p>
+<p>每次$H_{MD5}$ 把一个分组$Y$由512位压缩到128位，再和缓冲区中的$CV_{i}$或者$IV$相加，得到输出。最后一次的输出作为消息摘要值。$H(M) &#x3D; CV_{L}$</p>
 <p>每次$H_{MD5}$ 有四轮处理，每一轮处理有16次迭代，所以每次压缩需要64次迭代。</p>
-<h5 id="MD5算法组成">MD5算法组成</h5>
-<p>填充<br>
-附加消息的长度<br>
-对MD缓冲区初始化<br>
-以分组为单位对消息进行处理</p>
-<h6 id="填充">填充</h6>
-<p>使得消息比特长在模512下为448，即填充后消息的长度为512的某一倍数减64。(这64位用于表示消息长度。)<br>
-填充时，首先在消息末端附一个“1” ，然后再后接所需要的多个“0”。<br>
-当消息的长度为512的整数倍时，仍需要填充一个完整的分组，用于统一接口。</p>
-<h6 id="附加消息的长度">附加消息的长度</h6>
-<p>填充后消息的尾部的64位用来表示未填充时消息的长度，以little-endian方式来表示。所以MD5能处理的消息长度最大$2^{64}$it。尽管它能处理的消息长度有限，但在实际应用中已经足够了。<br>
-这样的处理使得该填充方案是可逆的，可以找到原始的消息。分组处理常常采用可逆的填充方案。</p>
-<h6 id="对MD缓冲区初始化">对MD缓冲区初始化</h6>
-<p>缓冲区可以表示为4个32位的寄存器(A, B, C, D)<br>
-$IV$(或$CV_{0}$（初始向量）：<br>
-A = 0x01234567<br>
-B = 0x89abcdef<br>
-C = 0xfedcba98<br>
-D = 0x76543210</p>
-<h6 id="以分组为单位对消息进行处理">以分组为单位对消息进行处理</h6>
-<p>在每一轮的16次迭代中，每次迭代的过程如下图所示。</p>
-<p>![Pasted image 20240326112641.png](…/imgs/密码学笔记/Pasted image 20240326112641.png)<br>
-<strong>ABCD:</strong><br>
-缓冲区的寄存器，其中A,C,D来自上一轮的D,B,C。B来自上一轮A参与运算后的结果.<br>
-<strong>X[k]：</strong><br>
-分组内的第k个子分组。一个分组512位，被划分成了16个32位的子分组。（每一迭代运算32位，所以需要迭代16次，共512位。)<br>
-<strong>CLSs：</strong><br>
-循环左移s位<br>
-<strong>T[i]:</strong><br>
-T是一个常数表，有64个元素，一个元素对应一次迭代。四轮处理，每轮16次迭代，所以常数表中需要64个元素。<br>
-常数表有64个元素，第i个元素$T[i]$为$2^{32}×abs(sin(i))$的整数部分。<br>
-sin为正弦函数；i以弧度为单位；abs为取绝对值。<br>
-将T划分为T[1,…,16], T[17,…,32], T[33,…,48], T[49,…,64]。<br>
-<strong>+:</strong><br>
-模$2^{32}$加法。<br>
-<strong>g：</strong><br>
-逻辑函数。每一轮使用一个逻辑函数。四轮的逻辑函数分别为F,G,H,I。</p>
+<h5 id="MD5算法组成"><a href="#MD5算法组成" class="headerlink" title="MD5算法组成"></a>MD5算法组成</h5><p>填充<br>附加消息的长度<br>对MD缓冲区初始化<br>以分组为单位对消息进行处理</p>
+<h6 id="填充"><a href="#填充" class="headerlink" title="填充"></a>填充</h6><p>使得消息比特长在模512下为448，即填充后消息的长度为512的某一倍数减64。(这64位用于表示消息长度。)<br>填充时，首先在消息末端附一个“1” ，然后再后接所需要的多个“0”。<br>当消息的长度为512的整数倍时，仍需要填充一个完整的分组，用于统一接口。</p>
+<h6 id="附加消息的长度"><a href="#附加消息的长度" class="headerlink" title="附加消息的长度"></a>附加消息的长度</h6><p>填充后消息的尾部的64位用来表示未填充时消息的长度，以little-endian方式来表示。所以MD5能处理的消息长度最大$2^{64}$it。尽管它能处理的消息长度有限，但在实际应用中已经足够了。<br>这样的处理使得该填充方案是可逆的，可以找到原始的消息。分组处理常常采用可逆的填充方案。</p>
+<h6 id="对MD缓冲区初始化"><a href="#对MD缓冲区初始化" class="headerlink" title="对MD缓冲区初始化"></a>对MD缓冲区初始化</h6><p>缓冲区可以表示为4个32位的寄存器(A, B, C, D)<br>$IV$(或$CV_{0}$（初始向量）：<br>A &#x3D; 0x01234567<br>B &#x3D; 0x89abcdef<br>C &#x3D; 0xfedcba98<br>D &#x3D; 0x76543210 </p>
+<h6 id="以分组为单位对消息进行处理"><a href="#以分组为单位对消息进行处理" class="headerlink" title="以分组为单位对消息进行处理"></a>以分组为单位对消息进行处理</h6><p>在每一轮的16次迭代中，每次迭代的过程如下图所示。</p>
+<p>![Pasted image 20240326112641.png](..&#x2F;imgs&#x2F;密码学笔记&#x2F;Pasted image 20240326112641.png)<br><strong>ABCD:</strong><br>缓冲区的寄存器，其中A,C,D来自上一轮的D,B,C。B来自上一轮A参与运算后的结果.<br><strong>X[k]：</strong><br>分组内的第k个子分组。一个分组512位，被划分成了16个32位的子分组。（每一迭代运算32位，所以需要迭代16次，共512位。)<br><strong>CLSs：</strong><br>循环左移s位<br><strong>T[i]:</strong><br>T是一个常数表，有64个元素，一个元素对应一次迭代。四轮处理，每轮16次迭代，所以常数表中需要64个元素。<br>常数表有64个元素，第i个元素$T[i]$为$2^{32}×abs(sin(i))$的整数部分。<br>sin为正弦函数；i以弧度为单位；abs为取绝对值。<br>将T划分为T[1,…,16], T[17,…,32], T[33,…,48], T[49,…,64]。<br><strong>+:</strong><br>模$2^{32}$加法。<br><strong>g：</strong><br>逻辑函数。每一轮使用一个逻辑函数。四轮的逻辑函数分别为F,G,H,I。</p>
 <table>
 <thead>
 <tr>
@@ -276,8 +181,7 @@ sin为正弦函数；i以弧度为单位；abs为取绝对值。<br>
 <th>g(b,c,d)</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>1</td>
 <td>F(b,c,d)</td>
 <td>(b∧c) ∨(~b∧d)</td>
@@ -297,15 +201,8 @@ sin为正弦函数；i以弧度为单位；abs为取绝对值。<br>
 <td>I(b,c,d)</td>
 <td>c⊕(b∨~d)</td>
 </tr>
-</tbody>
-</table>
-<p><strong>轮处理：</strong><br>
-四轮处理过程中，每轮以不同的次序使用16个字。<br>
-第一轮以字的初始次序使用；第二轮到第四轮，分别对字的次序i做置换后得到一个新的次序，然后使用新次序使用16个字。<br>
-第二到第四轮三个置换分别为<br>
-$v2(i) = (1 + 5i) mod 16$<br>
-$v3(i) = (1 + 5i) mod 16$<br>
-$v4(i) = (1 + 5i) mod 16$</p>
+</tbody></table>
+<p><strong>轮处理：</strong><br>四轮处理过程中，每轮以不同的次序使用16个字。<br>第一轮以字的初始次序使用；第二轮到第四轮，分别对字的次序i做置换后得到一个新的次序，然后使用新次序使用16个字。<br>第二到第四轮三个置换分别为<br>$v2(i) &#x3D; (1 + 5i) mod 16$<br>$v3(i) &#x3D; (1 + 5i) mod 16$<br>$v4(i) &#x3D; (1 + 5i) mod 16$</p>
 </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Jellyfish0029.github.io">xjelly</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://jellyfish0029.github.io/2024/03/26/cypto/">https://jellyfish0029.github.io/2024/03/26/cypto/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Jellyfish0029.github.io" target="_blank">Xjelly's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><a class="post-meta__tags" href="/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/">密码学</a></div><div class="post_share"><div class="social-share" data-image="/images_config/index_img.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.png" target="_blank"><img class="post-qr-code-img" src="/img/wechat.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="/img/alipay.png" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/03/26/des/" title="数据加密标准(DES)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数据加密标准(DES)</div></div></a></div><div class="next-post pull-right"><a href="/2024/03/22/hello/" title="Gaudeamus Igitur  国际学生歌"><img class="cover" src="/img/rambling1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Gaudeamus Igitur  国际学生歌</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/03/26/des/" title="数据加密标准(DES)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-26</div><div class="title">数据加密标准(DES)</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="lv-container" data-id="city" data-uid="MTAyMC81OTMzNC8zNTc5Ng=="></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images_config/index_img.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">xjelly</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Jellyfish0029" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xjelly0029@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">一、简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E4%BA%8E%E6%B6%88%E6%81%AF%E5%8A%A0%E5%AF%86%E7%9A%84%E8%AE%A4%E8%AF%81"><span class="toc-number">2.</span> <span class="toc-text">二、基于消息加密的认证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%BD%93%E5%88%B6%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E5%92%8C%E8%AE%A4%E8%AF%81"><span class="toc-number">2.1.</span> <span class="toc-text">1.对称加密体制实现加密和认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%BD%93%E5%88%B6%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E5%92%8C%E8%AE%A4%E8%AF%81"><span class="toc-number">2.2.</span> <span class="toc-text">2.非对称加密体制实现加密和认证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">三、消息认证码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">四、散列函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87%EF%BC%9A"><span class="toc-number">3.1.1.</span> <span class="toc-text">1.设计目标：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%94%9F%E6%97%A5%E6%94%BB%E5%87%BB%EF%BC%9A"><span class="toc-number">3.1.2.</span> <span class="toc-text">2.生日攻击：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%ACI%E7%B1%BB%E7%94%9F%E6%97%A5%E6%94%BB%E5%87%BB"><span class="toc-number">3.1.2.1.</span> <span class="toc-text">第I类生日攻击</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%ACII%E7%B1%BB%E7%94%9F%E6%97%A5%E6%94%BB%E5%87%BB"><span class="toc-number">3.1.2.2.</span> <span class="toc-text">第II类生日攻击</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%BF%AD%E4%BB%A3%E5%9E%8BHash%E5%87%BD%E6%95%B0"><span class="toc-number">3.1.3.</span> <span class="toc-text">3.迭代型Hash函数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.1.3.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#MD5%E7%AE%97%E6%B3%95%E7%BB%84%E6%88%90"><span class="toc-number">3.1.3.2.</span> <span class="toc-text">MD5算法组成</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%A1%AB%E5%85%85"><span class="toc-number">3.1.3.2.1.</span> <span class="toc-text">填充</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%99%84%E5%8A%A0%E6%B6%88%E6%81%AF%E7%9A%84%E9%95%BF%E5%BA%A6"><span class="toc-number">3.1.3.2.2.</span> <span class="toc-text">附加消息的长度</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%AF%B9MD%E7%BC%93%E5%86%B2%E5%8C%BA%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">3.1.3.2.3.</span> <span class="toc-text">对MD缓冲区初始化</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A5%E5%88%86%E7%BB%84%E4%B8%BA%E5%8D%95%E4%BD%8D%E5%AF%B9%E6%B6%88%E6%81%AF%E8%BF%9B%E8%A1%8C%E5%A4%84%E7%90%86"><span class="toc-number">3.1.3.2.4.</span> <span class="toc-text">以分组为单位对消息进行处理</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/26/des/" title="数据加密标准(DES)">数据加密标准(DES)</a><time datetime="2024-03-26T12:45:16.000Z" title="发表于 2024-03-26 20:45:16">2024-03-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/26/cypto/" title="散列函数与认证">散列函数与认证</a><time datetime="2024-03-26T12:34:55.000Z" title="发表于 2024-03-26 20:34:55">2024-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/22/hello/" title="Gaudeamus Igitur  国际学生歌"><img src="/img/rambling1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Gaudeamus Igitur  国际学生歌"/></a><div class="content"><a class="title" href="/2024/03/22/hello/" title="Gaudeamus Igitur  国际学生歌">Gaudeamus Igitur  国际学生歌</a><time datetime="2024-03-22T09:56:44.000Z" title="发表于 2024-03-22 17:56:44">2024-03-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/11/syzkaller_lab1/" title="Syzkaller实验报告（Crash Demo）">Syzkaller实验报告（Crash Demo）</a><time datetime="2023-12-11T11:01:11.000Z" title="发表于 2023-12-11 19:01:11">2023-12-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/07/setup_of_syzkaller/" title="Set up Syzkaller (记录安装过程)">Set up Syzkaller (记录安装过程)</a><time datetime="2023-12-07T01:53:24.000Z" title="发表于 2023-12-07 09:53:24">2023-12-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By xjelly</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
   const loadLivere = () => {
     if (typeof LivereTower === 'object') window.LivereTower.init()
